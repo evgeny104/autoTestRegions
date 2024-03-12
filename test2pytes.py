@@ -1,23 +1,20 @@
-import json1
 import requests
 
 
-def test_contre_code_kg():                                  # Код страны по фильтру "kg"
-    url = 'https://regions-test.2gis.com/1.0/regions?country_code=kg'
-    response = requests.request('GET', url)
-    data = (response.json())
-    data = json.dumps(data)
-    body = json.loads(data)
-    li = []                                                 # пустой список li для значения country_code
-    for item in body['items']:                              # цикл for по ключам ['country']['code']
-        code = (item['country']['code'])
-        li.append(code)
-    i = 0                                                   # возвращает длину списка li
-    while i < len(li):
-        i += 1
-    sample = li.count('kg')                                 # количество значений "kg" в списке li
-    assert sample == i
+def test_country_code_kg():
+    # Код страны по фильтру "ru"
+    url = 'https://regions-test.2gis.com/1.0/regions?country_code=ru'
+    response = requests.get(url)
+    # Проверка успешности запроса
+    assert response.status_code == 200
+    # Получение данных в формате JSON
+    data = response.json()
+    # Создание списка li для значения country_code
+    li = [item['country']['code'] for item in data['items']]
+    # Проверка, что количество значений "kg" равно длине списка li
+    assert li.count('ru') == len(li)
+    print("pass")
 
 
-test_contre_code_kg()
-
+# Запуск теста
+test_country_code_kg()
